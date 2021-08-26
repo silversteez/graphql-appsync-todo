@@ -1,25 +1,25 @@
-type Note {
+type Todo {
   id: ID!
   content: String!
 }
 
-input NoteInput {
+input TodoInput {
   id: ID!
   content: String!
 }
 
-input UpdateNoteInput {
+input UpdateTodoInput {
   id: ID!
   content: String
 }
 
 type Query {
-  listNotes: [Note]
-  getNoteById(noteId: String!): Note
+  listTodos: [Todo]
+  getTodoById(todoId: String!): Todo
 }
 
 type Mutation {
-  createNote(note: NoteInput!): Note
-  deleteNote(noteId: String!): String
-  updateNote(note: UpdateNoteInput!): Note
+  createTodo(todo: TodoInput!): Todo
+  deleteTodo(todoId: String!): String
+  updateTodo(todo: UpdateTodoInput!): Todo
 }

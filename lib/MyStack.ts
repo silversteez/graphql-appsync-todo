@@ -4,12 +4,13 @@ export default class MyStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
-    // Create a notes table
-    const notesTable = new sst.Table(this, "Notes", {
+    // Create a todos table
+    const todosTable = new sst.Table(this, "Todos", {
       fields: {
-        id: sst.TableFieldType.STRING,
+        userId: sst.TableFieldType.STRING,
+        todoId: sst.TableFieldType.STRING,
       },
-      primaryIndex: { partitionKey: "id" },
+      primaryIndex: { partitionKey: "userId", sortKey: "todoId" },
     });
 
     // Create the AppSync GraphQL API
@@ -20,23 +21,23 @@ export default class MyStack extends sst.Stack {
       defaultFunctionProps: {
         // Pass the table name to the function
         environment: {
-          NOTES_TABLE: notesTable.dynamodbTable.tableName,
+          TODOS_TABLE: todosTable.dynamodbTable.tableName,
         },
       },
       dataSources: {
-        notes: "src/main.handler",
+        todos: "src/main.handler",
       },
       resolvers: {
-        "Query    listNotes": "notes",
-        "Query    getNoteById": "notes",
-        "Mutation createNote": "notes",
-        "Mutation updateNote": "notes",
-        "Mutation deleteNote": "notes",
+        "Query    listTodos": "todos",
+        "Query    getTodoById": "todos",
+        "Mutation createTodo": "todos",
+        "Mutation updateTodo": "todos",
+        "Mutation deleteTodo": "todos",
       },
     });
 
     // Enable the AppSync API to access the DynamoDB table
-    api.attachPermissions([notesTable]);
+    api.attachPermissions([todosTable]);
 
     // Show the AppSync API Id in the output
     this.addOutputs({

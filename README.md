@@ -23,36 +23,36 @@ Once your local environment is ready, [head over to the AppSync console](https:/
 Here you can run queries and mutations and make changes locally to test your Lambda resolvers.
 
 ```graphql
-mutation createNote {
-  createNote(note: { id: "001", content: "My note" }) {
+mutation createTodo {
+  createTodo(todo: { id: "001", content: "My todo" }) {
     id
     content
   }
 }
 
-query getNoteById {
-  getNoteById(noteId: "001") {
+query getTodoById {
+  getTodoById(todoId: "001") {
     id
     content
   }
 }
 
-query listNotes {
-  listNotes {
+query listTodos {
+  listTodos {
     id
     content
   }
 }
 
-mutation updateNote {
-  updateNote(note: { id: "001", content: "My updated note" }) {
+mutation updateTodo {
+  updateTodo(todo: { id: "001", content: "My updated todo" }) {
     id
     content
   }
 }
 
-mutation deleteNote {
-  deleteNote(noteId: "001")
+mutation deleteTodo {
+  deleteTodo(todoId: "001")
 }
 ```
 
