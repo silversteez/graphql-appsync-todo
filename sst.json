@@ -1,0 +1,6 @@
+{
+  "name": "graphql-appsync",
+  "stage": "dev",
+  "region": "us-west-2",
+  "lint": true
+}
