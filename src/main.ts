@@ -6,29 +6,27 @@ import deleteTodo from "./deleteTodo";
 import getTodoById from "./getTodoById";
 
 type AppSyncEvent = {
-  info: {
-    fieldName: string;
-  };
-  arguments: {
-    todo: Todo;
-    todoId: string;
-  };
+  info: { fieldName: string };
+  identity: { sub: string };
+  arguments: { todo: Todo };
 };
 
 export async function handler(
   event: AppSyncEvent
 ): Promise<Record<string, unknown>[] | Todo | string | null | undefined> {
+  const userId = event.identity.sub;
+
   switch (event.info.fieldName) {
     case "listTodos":
-      return await listTodos();
+      return await listTodos(userId);
     case "createTodo":
-      return await createTodo(event.arguments.todo);
+      return await createTodo(userId, event.arguments.todo);
     case "updateTodo":
-      return await updateTodo(event.arguments.todo);
+      return await updateTodo(userId, event.arguments.todo);
     case "deleteTodo":
-      return await deleteTodo(event.arguments.todoId);
+      return await deleteTodo(userId, event.arguments.todo);
     case "getTodoById":
-      return await getTodoById(event.arguments.todoId);
+      return await getTodoById(userId, event.arguments.todo);
     default:
       return null;
   }

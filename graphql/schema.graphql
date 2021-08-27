@@ -1,25 +1,48 @@
 type Todo {
   id: ID!
+  userId: ID!
+  title: String!
+  createdAt: Int!
+  items: [TodoItem!]!
+}
+
+type TodoItem {
+  id: ID!
   content: String!
+  isComplete: Boolean!
 }
 
 input TodoInput {
   id: ID!
-  content: String!
+  title: String!
+  items: [TodoItemInput!]!
 }
 
 input UpdateTodoInput {
   id: ID!
+  title: String
+  items: [UpdateTodoItemInput]
+}
+
+input TodoItemInput {
+  id: ID!
+  content: String!
+  isComplete: Boolean!
+}
+
+input UpdateTodoItemInput {
+  id: ID!
   content: String
+  isComplete: Boolean
 }
 
 type Query {
   listTodos: [Todo]
-  getTodoById(todoId: String!): Todo
+  getTodoById(id: String!): Todo
 }
 
 type Mutation {
   createTodo(todo: TodoInput!): Todo
-  deleteTodo(todoId: String!): String
+  deleteTodo(id: String!): String
   updateTodo(todo: UpdateTodoInput!): Todo
 }

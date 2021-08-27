@@ -1,14 +1,18 @@
 import { DynamoDB } from "aws-sdk";
+import Todo from "./Todo";
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-export default async function deleteTodo(todoId: string): Promise<string> {
+export default async function deleteTodo(
+  userId: string,
+  todo: Todo
+): Promise<string> {
   const params = {
-    Key: { id: todoId },
+    Key: { id: todo.id, userId: userId },
     TableName: process.env.TODOS_TABLE as string,
   };
 
   await dynamoDb.delete(params).promise();
 
-  return todoId;
+  return todo.id;
 }

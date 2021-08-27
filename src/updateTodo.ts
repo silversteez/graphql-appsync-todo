@@ -3,13 +3,16 @@ import Todo from "./Todo";
 
 const dynamoDb = new DynamoDB.DocumentClient();
 
-export default async function updateTodo(todo: Todo): Promise<Todo> {
+export default async function updateTodo(
+  userId: string,
+  todo: Todo
+): Promise<Todo> {
   const params = {
-    Key: { id: todo.id },
+    Key: { id: todo.id, userId: userId },
     ReturnValues: "UPDATED_NEW",
-    UpdateExpression: "SET content = :content",
+    UpdateExpression: "SET title = :title",
     TableName: process.env.TODOS_TABLE as string,
-    ExpressionAttributeValues: { ":content": todo.content },
+    ExpressionAttributeValues: { ":title": todo.title },
   };
 
   await dynamoDb.update(params).promise();

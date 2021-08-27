@@ -4,10 +4,11 @@ import Todo from "./Todo";
 const dynamoDb = new DynamoDB.DocumentClient();
 
 export default async function getTodoById(
-  todoId: string
+  userId: string,
+  todo: Todo
 ): Promise<Todo | undefined> {
   const params = {
-    Key: { id: todoId },
+    Key: { id: todo.id, userId: userId },
     TableName: process.env.TODOS_TABLE as string,
   };
 

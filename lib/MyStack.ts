@@ -1,22 +1,44 @@
 import * as sst from "@serverless-stack/resources";
+import * as appsync from "@aws-cdk/aws-appsync";
+import * as cognito from "@aws-cdk/aws-cognito";
 
 export default class MyStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
 
+    const auth = new sst.Auth(this, "Auth", {
+      cognito: {
+        userPool: {
+          signInAliases: { email: true },
+        },
+      },
+    });
+
     // Create a todos table
     const todosTable = new sst.Table(this, "Todos", {
       fields: {
+        id: sst.TableFieldType.STRING,
         userId: sst.TableFieldType.STRING,
-        todoId: sst.TableFieldType.STRING,
+        createdAt: sst.TableFieldType.NUMBER,
       },
-      primaryIndex: { partitionKey: "userId", sortKey: "todoId" },
+      primaryIndex: { partitionKey: "userId", sortKey: "createdAt" },
+      secondaryIndexes: {
+        todoIdIndex: { partitionKey: "id", sortKey: "createdAt" },
+      },
     });
 
     // Create the AppSync GraphQL API
     const api = new sst.AppSyncApi(this, "AppSyncApi", {
       graphqlApi: {
         schema: "graphql/schema.graphql",
+        authorizationConfig: {
+          defaultAuthorization: {
+            authorizationType: appsync.AuthorizationType.USER_POOL,
+            userPoolConfig: {
+              userPool: auth.cognitoUserPool as cognito.UserPool,
+            },
+          },
+        },
       },
       defaultFunctionProps: {
         // Pass the table name to the function
