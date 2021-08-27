@@ -61,9 +61,19 @@ export default class MyStack extends sst.Stack {
     // Enable the AppSync API to access the DynamoDB table
     api.attachPermissions([todosTable]);
 
+    const site = new sst.ReactStaticSite(this, "ReactSite", {
+      path: "front-end",
+      environment: {
+        // Pass in the API endpoint to our app
+        REACT_APP_API_URL: api.url,
+      },
+    });
+
     // Show the AppSync API Id in the output
     this.addOutputs({
       ApiId: api.graphqlApi.apiId,
+      SiteUrl: site.url,
+      ApiEndpoint: api.url,
     });
   }
 }

@@ -2,6 +2,7 @@
   "name": "todos-appsync",
   "version": "0.1.0",
   "private": true,
+  "workspaces": ["front-end"],
   "scripts": {
     "test": "sst test",
     "start": "sst start",
