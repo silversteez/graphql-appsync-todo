@@ -1,60 +1,8 @@
-# How to create a GraphQL API with AWS AppSync
+# AppSync & React Todo App
 
-An example serverless app created with SST.
-
-## Getting Started
-
-[**Read the tutorial**](https://serverless-stack.com/examples/how-to-create-a-serverless-graphql-api-with-aws-appsync.html)
-
-Install the dependencies.
-
-```bash
-$ npm install
-```
-
-Start the Live Lambda Development environment.
-
-```bash
-$ npm sst start
-```
-
-Once your local environment is ready, [head over to the AppSync console](https://console.aws.amazon.com/appsync).
-
-Here you can run queries and mutations and make changes locally to test your Lambda resolvers.
-
-```graphql
-mutation createTodo {
-  createTodo(todo: { id: "001", content: "My todo" }) {
-    id
-    content
-  }
-}
-
-query getTodoById {
-  getTodoById(todoId: "001") {
-    id
-    content
-  }
-}
-
-query listTodos {
-  listTodos {
-    id
-    content
-  }
-}
-
-mutation updateTodo {
-  updateTodo(todo: { id: "001", content: "My updated todo" }) {
-    id
-    content
-  }
-}
-
-mutation deleteTodo {
-  deleteTodo(todoId: "001")
-}
-```
+Created with SST/CDK.
+Started with this 
+[**tutorial**](https://serverless-stack.com/examples/how-to-create-a-serverless-graphql-api-with-aws-appsync.html)
 
 ## Commands
 
