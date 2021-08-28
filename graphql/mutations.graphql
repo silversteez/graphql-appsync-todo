@@ -1,12 +1,6 @@
-mutation CreateTodo {
-    createTodo(todo: {id: "123", title: "todo one", items: [{content: "do it", id: "123", isComplete: false}]}) {
+mutation CreateTodo($todo: TodoInput!) {
+    createTodo(todo: $todo) {
         id
         title
     }
 }
-
-#query findUser($userId: ID!) {
-#    user(id: $userId) {
-#        ...UserFields
-#    }
-#}

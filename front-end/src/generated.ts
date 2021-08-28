@@ -87,7 +87,9 @@ export type UpdateTodoItemInput = {
   isComplete?: Maybe<Scalars['Boolean']>;
 };
 
-export type CreateTodoMutationVariables = Exact<{ [key: string]: never; }>;
+export type CreateTodoMutationVariables = Exact<{
+  todo: TodoInput;
+}>;
 
 
 export type CreateTodoMutation = { __typename?: 'Mutation', createTodo?: Maybe<{ __typename?: 'Todo', id: string, title: string }> };
@@ -99,10 +101,8 @@ export type ListTodosQuery = { __typename?: 'Query', listTodos?: Maybe<Array<May
 
 
 export const CreateTodoDocument = gql`
-    mutation CreateTodo {
-  createTodo(
-    todo: {id: "123", title: "todo one", items: [{content: "do it", id: "123", isComplete: false}]}
-  ) {
+    mutation CreateTodo($todo: TodoInput!) {
+  createTodo(todo: $todo) {
     id
     title
   }
@@ -123,6 +123,7 @@ export type CreateTodoMutationFn = Apollo.MutationFunction<CreateTodoMutation, C
  * @example
  * const [createTodoMutation, { data, loading, error }] = useCreateTodoMutation({
  *   variables: {
+ *      todo: // value for 'todo'
  *   },
  * });
  */
