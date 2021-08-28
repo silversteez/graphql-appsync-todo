@@ -3,9 +3,36 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { QueryClient, QueryClientProvider } from "react-query";
 import config from "./config";
-import { Amplify } from "aws-amplify";
+import { Amplify, Auth } from "aws-amplify";
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+  createHttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+
+const httpLink = createHttpLink({
+  uri: process.env.REACT_APP_API_URL,
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  const session = await Auth.currentSession();
+  const jwt = session.getIdToken().getJwtToken();
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: jwt,
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 Amplify.configure({
   aws_appsync_authenticationType: "AMAZON_COGNITO_USER_POOLS",
@@ -16,18 +43,13 @@ Amplify.configure({
     identityPoolId: config.cognito.IDENTITY_POOL_ID,
     userPoolWebClientId: config.cognito.APP_CLIENT_ID,
   },
-  API: {
-    graphql_endpoint: process.env.REACT_APP_API_URL,
-  },
 });
-
-const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
+    <ApolloProvider client={client}>
       <App />
-    </QueryClientProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

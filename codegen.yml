@@ -1,0 +1,21 @@
+overwrite: true
+schema: "graphql"
+documents:
+  - graphql/queries.graphql
+  - graphql/mutations.graphql
+generates:
+  front-end/src/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+#      - "typescript-react-query"
+      - "typescript-react-apollo"
+    config:
+      withHooks: true
+
+  #      fetcher:
+#        endpoint: 'process.env.REACT_APP_API_URL'
+#        fetchParams: 'fetchParams'
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

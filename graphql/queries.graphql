@@ -1,0 +1,14 @@
+query ListTodos {
+    listTodos {
+        id
+        createdAt
+        items {
+            content
+            id
+            isComplete
+        }
+        title
+        userId
+    }
+}
+

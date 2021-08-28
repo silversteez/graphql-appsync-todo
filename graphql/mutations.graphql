@@ -1,0 +1,12 @@
+mutation CreateTodo {
+    createTodo(todo: {id: "123", title: "todo one", items: [{content: "do it", id: "123", isComplete: false}]}) {
+        id
+        title
+    }
+}
+
+#query findUser($userId: ID!) {
+#    user(id: $userId) {
+#        ...UserFields
+#    }
+#}
