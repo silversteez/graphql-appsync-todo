@@ -4,3 +4,38 @@ mutation CreateTodo($todo: TodoInput!) {
         title
     }
 }
+
+mutation DeleteTodo($id: ID!) {
+    deleteTodo(id: $id) {
+        id
+    }
+}
+
+mutation UpdateTodo($todo: UpdateTodoInput!) {
+    updateTodo(todo: $todo) {
+        id
+        title
+    }
+}
+
+mutation  CreateTodoItem($todoId: ID!, $todoItem: TodoItemInput!) {
+    createTodoItem(todoId: $todoId, todoItem: $todoItem) {
+        id
+        content
+        isComplete
+    }
+}
+
+mutation UpdateTodoItem($todoId: ID!, $todoItem: UpdateTodoItemInput!) {
+    updateTodoItem(todoId: $todoId, todoItem: $todoItem) {
+        id
+        content
+        isComplete
+    }
+}
+
+mutation DeleteTodoItem($todoId: ID!, $todoItemId: ID!) {
+    deleteTodoItem(todoId: $todoId, todoItemId: $todoItemId) {
+        id
+    }
+}

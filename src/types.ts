@@ -12,4 +12,4 @@ type TodoItem = {
   isComplete: boolean;
 };
 
-export default Todo;
+export { Todo, TodoItem };

@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import config from "./config";
 import { Amplify, Auth } from "aws-amplify";
+import { ChakraProvider } from "@chakra-ui/react";
 import {
   ApolloClient,
   ApolloProvider,
@@ -48,7 +48,9 @@ Amplify.configure({
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")

@@ -1,5 +1,5 @@
 import { DynamoDB } from "aws-sdk";
-import Todo from "./Todo";
+import { Todo } from "./types";
 
 const dynamoDb = new DynamoDB.DocumentClient();
 

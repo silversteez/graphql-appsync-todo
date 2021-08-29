@@ -1,6 +1,7 @@
 import * as sst from "@serverless-stack/resources";
 import * as appsync from "@aws-cdk/aws-appsync";
 import * as cognito from "@aws-cdk/aws-cognito";
+import { RemovalPolicy } from "@aws-cdk/core";
 
 export default class MyStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
@@ -21,9 +22,12 @@ export default class MyStack extends sst.Stack {
         userId: sst.TableFieldType.STRING,
         createdAt: sst.TableFieldType.NUMBER,
       },
-      primaryIndex: { partitionKey: "userId", sortKey: "createdAt" },
+      primaryIndex: { partitionKey: "id", sortKey: "userId" },
       secondaryIndexes: {
-        todoIdIndex: { partitionKey: "id", sortKey: "createdAt" },
+        "userId-CreatedAt": { partitionKey: "userId", sortKey: "createdAt" },
+      },
+      dynamodbTable: {
+        removalPolicy: RemovalPolicy.DESTROY,
       },
     });
 
@@ -55,6 +59,7 @@ export default class MyStack extends sst.Stack {
         "Mutation createTodo": "todos",
         "Mutation updateTodo": "todos",
         "Mutation deleteTodo": "todos",
+        "Mutation createTodoItem": "todos",
       },
     });
 
@@ -66,11 +71,11 @@ export default class MyStack extends sst.Stack {
       environment: {
         // Pass in the API endpoint to our app
         REACT_APP_API_URL: api.url,
-        REACT_APP_REGION: scope.region || "",
-        REACT_APP_USER_POOL_ID: auth?.cognitoUserPool?.userPoolId || "",
-        REACT_APP_USER_POOL_CLIENT_ID:
-          auth?.cognitoUserPoolClient?.userPoolClientId || "",
-        REACT_APP_IDENTITY_POOL_ID: auth.cognitoCfnIdentityPool.ref || "",
+        REACT_APP_REGION: scope.region as string,
+        REACT_APP_USER_POOL_ID: auth?.cognitoUserPool?.userPoolId as string,
+        REACT_APP_USER_POOL_CLIENT_ID: auth?.cognitoUserPoolClient
+          ?.userPoolClientId as string,
+        REACT_APP_IDENTITY_POOL_ID: auth.cognitoCfnIdentityPool.ref as string,
       },
     });
 

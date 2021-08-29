@@ -7,9 +7,10 @@ export default async function listTodos(
 ): Promise<Record<string, unknown>[] | undefined> {
   const params = {
     TableName: process.env.TODOS_TABLE as string,
-    KeyConditionExpression: "userId = :hashKey",
+    IndexName: "userId-CreatedAt",
+    KeyConditionExpression: "userId = :userId",
     ExpressionAttributeValues: {
-      ":hashKey": userId,
+      ":userId": userId,
     },
   };
 
