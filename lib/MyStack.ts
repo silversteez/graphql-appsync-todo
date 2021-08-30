@@ -60,6 +60,8 @@ export default class MyStack extends sst.Stack {
         "Mutation updateTodo": "todos",
         "Mutation deleteTodo": "todos",
         "Mutation createTodoItem": "todos",
+        "Mutation deleteTodoItem": "todos",
+        "Mutation updateTodoItem": "todos",
       },
     });
 

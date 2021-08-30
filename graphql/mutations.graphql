@@ -5,10 +5,8 @@ mutation CreateTodo($todo: TodoInput!) {
     }
 }
 
-mutation DeleteTodo($id: ID!) {
-    deleteTodo(id: $id) {
-        id
-    }
+mutation DeleteTodo($todoId: ID!) {
+    deleteTodo(todoId: $todoId)
 }
 
 mutation UpdateTodo($todo: UpdateTodoInput!) {
@@ -26,16 +24,16 @@ mutation  CreateTodoItem($todoId: ID!, $todoItem: TodoItemInput!) {
     }
 }
 
-mutation UpdateTodoItem($todoId: ID!, $todoItem: UpdateTodoItemInput!) {
-    updateTodoItem(todoId: $todoId, todoItem: $todoItem) {
+mutation UpdateTodoItem($todoId: ID!, $todoItem: UpdateTodoItemInput!, $todoItemIndex: Int!) {
+    updateTodoItem(todoId: $todoId, todoItem: $todoItem, todoItemIndex: $todoItemIndex) {
         id
         content
         isComplete
     }
 }
 
-mutation DeleteTodoItem($todoId: ID!, $todoItemId: ID!) {
-    deleteTodoItem(todoId: $todoId, todoItemId: $todoItemId) {
+mutation DeleteTodoItem($todoId: ID!, $todoItemId: ID!, $todoItemIndex: Int!) {
+    deleteTodoItem(todoId: $todoId, todoItemId: $todoItemId, todoItemIndex: $todoItemIndex) {
         id
     }
 }

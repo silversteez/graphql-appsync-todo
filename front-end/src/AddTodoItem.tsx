@@ -1,42 +1,53 @@
 import { useState } from "react";
+import { Todo } from "./generated";
 import { useCreateTodoItemMutation } from "./generated";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 
-export function AddTodoItem() {
+export function AddTodoItem({ todo }: { todo: Todo }) {
   const [content, setContent] = useState("");
-  const [createTodoItemMutation, { data, loading, error }] =
-    useCreateTodoItemMutation();
+  const [createTodoItemMutation, { loading, error }] =
+    useCreateTodoItemMutation({
+      refetchQueries: ["ListTodos"],
+    });
+
+  const handleCreateItem = () => {
+    createTodoItemMutation({
+      variables: {
+        todoId: todo.id,
+        todoItem: {
+          id: String(new Date().getTime()), // quick hack
+          content: content,
+          isComplete: false,
+        },
+      },
+    });
+    setContent("");
+  };
   return (
-    <div>
-      <div>
-        <label htmlFor="todo-title">TODO Item Content</label>
-        <input
-          id="todo-content"
+    <Flex>
+      <Box flexGrow={1} marginRight={4}>
+        <Input
           type="text"
           value={content}
+          placeholder={"Get coffee"}
           onChange={(event) => setContent(event.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleCreateItem();
+            }
+          }}
         />
-      </div>
-      <div>
-        <button
-          onClick={() =>
-            createTodoItemMutation({
-              variables: {
-                todoId: "1630215377002",
-                todoItem: {
-                  id: String(new Date().getTime()), // quick hack
-                  content: content,
-                  isComplete: false,
-                },
-              },
-            })
-          }
+      </Box>
+      <Box>
+        <Button
+          isLoading={loading}
+          colorScheme={"green"}
+          onClick={handleCreateItem}
         >
-          Add TODO Item
-        </button>
-      </div>
+          Add Item
+        </Button>
+      </Box>
       {error && <div>MUTATION ERROR!</div>}
-      {loading && <div>loading mutation...</div>}
-      {data && <pre>{JSON.stringify(data, undefined, 2)}</pre>}
-    </div>
+    </Flex>
   );
 }

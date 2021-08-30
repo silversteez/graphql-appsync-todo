@@ -1,19 +1,27 @@
 import { useListTodosQuery } from "./generated";
 import { withAuthenticator } from "@aws-amplify/ui-react";
 import { AddTodo } from "./AddTodo";
-import { AddTodoItem } from "./AddTodoItem";
+import { Stack } from "@chakra-ui/react";
+import { Todo } from "./Todo";
 
 function App() {
   const { data, loading, error } = useListTodosQuery();
-
   return (
-    <div className="App">
+    <Stack
+      spacing={8}
+      p={8}
+      m="0 auto"
+      className="App"
+      w={"100vw"}
+      h={"100vh"}
+      minH={"100vh"}
+      textColor={"white"}
+    >
+      {data && data.listTodos.map((todo) => <Todo todo={todo} key={todo.id} />)}
       <AddTodo />
-      <AddTodoItem />
       {error && <div>ERROR!</div>}
       {loading && <div>loading...</div>}
-      {data && <pre>{JSON.stringify(data, undefined, 2)}</pre>}
-    </div>
+    </Stack>
   );
 }
 

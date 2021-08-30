@@ -18,7 +18,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createTodo?: Maybe<Todo>;
   updateTodo?: Maybe<Todo>;
-  deleteTodo?: Maybe<Todo>;
+  deleteTodo?: Maybe<Scalars['ID']>;
   createTodoItem?: Maybe<TodoItem>;
   updateTodoItem?: Maybe<TodoItem>;
   deleteTodoItem?: Maybe<TodoItem>;
@@ -36,7 +36,7 @@ export type MutationUpdateTodoArgs = {
 
 
 export type MutationDeleteTodoArgs = {
-  id: Scalars['ID'];
+  todoId: Scalars['ID'];
 };
 
 
@@ -49,17 +49,19 @@ export type MutationCreateTodoItemArgs = {
 export type MutationUpdateTodoItemArgs = {
   todoId: Scalars['ID'];
   todoItem: UpdateTodoItemInput;
+  todoItemIndex: Scalars['Int'];
 };
 
 
 export type MutationDeleteTodoItemArgs = {
   todoId: Scalars['ID'];
   todoItemId: Scalars['ID'];
+  todoItemIndex: Scalars['Int'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  listTodos?: Maybe<Array<Maybe<Todo>>>;
+  listTodos: Array<Todo>;
   getTodoById?: Maybe<Todo>;
 };
 
@@ -116,11 +118,11 @@ export type CreateTodoMutationVariables = Exact<{
 export type CreateTodoMutation = { __typename?: 'Mutation', createTodo?: Maybe<{ __typename?: 'Todo', id: string, title: string }> };
 
 export type DeleteTodoMutationVariables = Exact<{
-  id: Scalars['ID'];
+  todoId: Scalars['ID'];
 }>;
 
 
-export type DeleteTodoMutation = { __typename?: 'Mutation', deleteTodo?: Maybe<{ __typename?: 'Todo', id: string }> };
+export type DeleteTodoMutation = { __typename?: 'Mutation', deleteTodo?: Maybe<string> };
 
 export type UpdateTodoMutationVariables = Exact<{
   todo: UpdateTodoInput;
@@ -140,6 +142,7 @@ export type CreateTodoItemMutation = { __typename?: 'Mutation', createTodoItem?:
 export type UpdateTodoItemMutationVariables = Exact<{
   todoId: Scalars['ID'];
   todoItem: UpdateTodoItemInput;
+  todoItemIndex: Scalars['Int'];
 }>;
 
 
@@ -148,6 +151,7 @@ export type UpdateTodoItemMutation = { __typename?: 'Mutation', updateTodoItem?:
 export type DeleteTodoItemMutationVariables = Exact<{
   todoId: Scalars['ID'];
   todoItemId: Scalars['ID'];
+  todoItemIndex: Scalars['Int'];
 }>;
 
 
@@ -156,7 +160,7 @@ export type DeleteTodoItemMutation = { __typename?: 'Mutation', deleteTodoItem?:
 export type ListTodosQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListTodosQuery = { __typename?: 'Query', listTodos?: Maybe<Array<Maybe<{ __typename?: 'Todo', id: string, createdAt: number, title: string, userId: string, items: Array<{ __typename?: 'TodoItem', content: string, id: string, isComplete: boolean }> }>>> };
+export type ListTodosQuery = { __typename?: 'Query', listTodos: Array<{ __typename?: 'Todo', id: string, createdAt: number, title: string, userId: string, items: Array<{ __typename?: 'TodoItem', content: string, id: string, isComplete: boolean }> }> };
 
 
 export const CreateTodoDocument = gql`
@@ -194,10 +198,8 @@ export type CreateTodoMutationHookResult = ReturnType<typeof useCreateTodoMutati
 export type CreateTodoMutationResult = Apollo.MutationResult<CreateTodoMutation>;
 export type CreateTodoMutationOptions = Apollo.BaseMutationOptions<CreateTodoMutation, CreateTodoMutationVariables>;
 export const DeleteTodoDocument = gql`
-    mutation DeleteTodo($id: ID!) {
-  deleteTodo(id: $id) {
-    id
-  }
+    mutation DeleteTodo($todoId: ID!) {
+  deleteTodo(todoId: $todoId)
 }
     `;
 export type DeleteTodoMutationFn = Apollo.MutationFunction<DeleteTodoMutation, DeleteTodoMutationVariables>;
@@ -215,7 +217,7 @@ export type DeleteTodoMutationFn = Apollo.MutationFunction<DeleteTodoMutation, D
  * @example
  * const [deleteTodoMutation, { data, loading, error }] = useDeleteTodoMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      todoId: // value for 'todoId'
  *   },
  * });
  */
@@ -297,8 +299,12 @@ export type CreateTodoItemMutationHookResult = ReturnType<typeof useCreateTodoIt
 export type CreateTodoItemMutationResult = Apollo.MutationResult<CreateTodoItemMutation>;
 export type CreateTodoItemMutationOptions = Apollo.BaseMutationOptions<CreateTodoItemMutation, CreateTodoItemMutationVariables>;
 export const UpdateTodoItemDocument = gql`
-    mutation UpdateTodoItem($todoId: ID!, $todoItem: UpdateTodoItemInput!) {
-  updateTodoItem(todoId: $todoId, todoItem: $todoItem) {
+    mutation UpdateTodoItem($todoId: ID!, $todoItem: UpdateTodoItemInput!, $todoItemIndex: Int!) {
+  updateTodoItem(
+    todoId: $todoId
+    todoItem: $todoItem
+    todoItemIndex: $todoItemIndex
+  ) {
     id
     content
     isComplete
@@ -322,6 +328,7 @@ export type UpdateTodoItemMutationFn = Apollo.MutationFunction<UpdateTodoItemMut
  *   variables: {
  *      todoId: // value for 'todoId'
  *      todoItem: // value for 'todoItem'
+ *      todoItemIndex: // value for 'todoItemIndex'
  *   },
  * });
  */
@@ -333,8 +340,12 @@ export type UpdateTodoItemMutationHookResult = ReturnType<typeof useUpdateTodoIt
 export type UpdateTodoItemMutationResult = Apollo.MutationResult<UpdateTodoItemMutation>;
 export type UpdateTodoItemMutationOptions = Apollo.BaseMutationOptions<UpdateTodoItemMutation, UpdateTodoItemMutationVariables>;
 export const DeleteTodoItemDocument = gql`
-    mutation DeleteTodoItem($todoId: ID!, $todoItemId: ID!) {
-  deleteTodoItem(todoId: $todoId, todoItemId: $todoItemId) {
+    mutation DeleteTodoItem($todoId: ID!, $todoItemId: ID!, $todoItemIndex: Int!) {
+  deleteTodoItem(
+    todoId: $todoId
+    todoItemId: $todoItemId
+    todoItemIndex: $todoItemIndex
+  ) {
     id
   }
 }
@@ -356,6 +367,7 @@ export type DeleteTodoItemMutationFn = Apollo.MutationFunction<DeleteTodoItemMut
  *   variables: {
  *      todoId: // value for 'todoId'
  *      todoItemId: // value for 'todoItemId'
+ *      todoItemIndex: // value for 'todoItemIndex'
  *   },
  * });
  */

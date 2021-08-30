@@ -1,24 +1,27 @@
 import { useState } from "react";
 import { useCreateTodoMutation } from "./generated";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 
 export function AddTodo() {
   const [title, setTitle] = useState("");
-  const [createTodoMutation, { data, loading, error }] =
-    useCreateTodoMutation();
+  const [createTodoMutation, { loading, error }] = useCreateTodoMutation({
+    refetchQueries: ["ListTodos"],
+  });
   return (
-    <div>
-      <div>
-        <label htmlFor="todo-title">TODO Title</label>
-        <input
-          id="todo-title"
+    <Flex>
+      <Box flexGrow={1} marginRight={4}>
+        <Input
           type="text"
           value={title}
+          placeholder={"My shopping list"}
           onChange={(event) => setTitle(event.target.value)}
         />
-      </div>
-      <div>
-        <button
-          onClick={() =>
+      </Box>
+      <Box>
+        <Button
+          isLoading={loading}
+          colorScheme={"green"}
+          onClick={() => {
             createTodoMutation({
               variables: {
                 todo: {
@@ -27,15 +30,14 @@ export function AddTodo() {
                   items: [],
                 },
               },
-            })
-          }
+            });
+            setTitle("");
+          }}
         >
-          Add TODO
-        </button>
-      </div>
+          Create Todo List
+        </Button>
+      </Box>
       {error && <div>MUTATION ERROR!</div>}
-      {loading && <div>loading mutation...</div>}
-      {data && <pre>{JSON.stringify(data, undefined, 2)}</pre>}
-    </div>
+    </Flex>
   );
 }

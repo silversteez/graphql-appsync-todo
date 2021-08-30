@@ -5,11 +5,18 @@ import updateTodo from "./updateTodo";
 import deleteTodo from "./deleteTodo";
 import getTodoById from "./getTodoById";
 import createTodoItem from "./createTodoItem";
+import deleteTodoItem from "./deleteTodoItem";
+import updateTodoItem from "./updateTodoItem";
 
 type AppSyncEvent = {
   info: { fieldName: string };
   identity: { sub: string };
-  arguments: { todo: Todo; todoItem: TodoItem; todoId: string };
+  arguments: {
+    todo: Todo;
+    todoItem: TodoItem;
+    todoItemIndex: number;
+    todoId: string;
+  };
 };
 
 export async function handler(
@@ -21,6 +28,7 @@ export async function handler(
   const todo = event.arguments.todo;
   const todoId = event.arguments.todoId;
   const todoItem = event.arguments.todoItem;
+  const todoItemIndex = event.arguments.todoItemIndex;
 
   console.log("main.ts - fieldName:", event.info.fieldName);
 
@@ -32,11 +40,15 @@ export async function handler(
     case "updateTodo":
       return await updateTodo(userId, todo);
     case "deleteTodo":
-      return await deleteTodo(userId, todo);
+      return await deleteTodo(userId, todoId);
     case "getTodoById":
       return await getTodoById(userId, todo);
     case "createTodoItem":
       return await createTodoItem(userId, todoId, todoItem);
+    case "deleteTodoItem":
+      return await deleteTodoItem(userId, todoId, todoItemIndex, todoItem);
+    case "updateTodoItem":
+      return await updateTodoItem(userId, todoId, todoItemIndex, todoItem);
     default:
       return null;
   }

@@ -42,15 +42,15 @@ input UpdateTodoItemInput {
 }
 
 type Query {
-  listTodos: [Todo]
+  listTodos: [Todo!]!
   getTodoById(id: String!): Todo
 }
 
 type Mutation {
   createTodo(todo: TodoInput!): Todo
   updateTodo(todo: UpdateTodoInput!): Todo
-  deleteTodo(id: ID!): Todo
+  deleteTodo(todoId: ID!): ID
   createTodoItem(todoId: ID!, todoItem: TodoItemInput!): TodoItem
-  updateTodoItem(todoId: ID!, todoItem: UpdateTodoItemInput!): TodoItem
-  deleteTodoItem(todoId: ID!, todoItemId: ID!): TodoItem
+  updateTodoItem(todoId: ID!, todoItem: UpdateTodoItemInput!, todoItemIndex: Int!): TodoItem
+  deleteTodoItem(todoId: ID!, todoItemId: ID!, todoItemIndex: Int!): TodoItem
 }

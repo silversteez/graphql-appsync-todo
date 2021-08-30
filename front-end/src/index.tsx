@@ -4,7 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import config from "./config";
 import { Amplify, Auth } from "aws-amplify";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, extendTheme } from "@chakra-ui/react";
 import {
   ApolloClient,
   ApolloProvider,
@@ -32,6 +32,7 @@ const authLink = setContext(async (_, { headers }) => {
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  connectToDevTools: true,
 });
 
 Amplify.configure({
@@ -45,10 +46,26 @@ Amplify.configure({
   },
 });
 
+const theme = extendTheme({
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  },
+  styles: {
+    global: {
+      "html, body": {
+        height: "100vh",
+        backgroundColor: "gray.800",
+      },
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <ApolloProvider client={client}>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <App />
       </ChakraProvider>
     </ApolloProvider>
