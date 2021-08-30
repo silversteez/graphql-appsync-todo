@@ -31,5 +31,6 @@
     "aws-sdk": "^2.863.0",
     "graphql": "^15.5.1"
   },
-  "prettier": {}
+  "prettier": {},
+  "license": "MIT"
 }
