@@ -1,18 +1,9 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Stack,
-  // Fade,
-  // useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import { AddTodoItem } from "./AddTodoItem";
 import { TodoItem } from "./TodoItem";
 import { Todo as TodoType, useDeleteTodoMutation } from "./generated";
 
 export function Todo({ todo }: { todo: TodoType }) {
-  // const { isOpen, onOpen, onClose } = useDisclosure();
   const [deleteTodoMutation, { loading: deleteLoading, error: deleteError }] =
     useDeleteTodoMutation({ refetchQueries: ["ListTodos"] });
   return (
@@ -21,7 +12,6 @@ export function Todo({ todo }: { todo: TodoType }) {
         <Heading as="h4" size="md" marginRight={2}>
           {todo.title}
         </Heading>
-        {/*<Fade in={isOpen}>*/}
         <Button
           isLoading={deleteLoading}
           colorScheme={"pink"}
@@ -32,7 +22,6 @@ export function Todo({ todo }: { todo: TodoType }) {
         >
           X
         </Button>
-        {/*</Fade>*/}
         {deleteError && <div>{deleteError.message}</div>}
       </Flex>
       <Box marginBottom={4}>

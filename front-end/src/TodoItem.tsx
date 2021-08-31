@@ -12,8 +12,6 @@ import {
   EditablePreview,
   Flex,
   Spacer,
-  // Fade,
-  // useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -28,7 +26,6 @@ export function TodoItem({
 }) {
   let [content, setContent] = useState(item.content);
   let [isChecked, setChecked] = useState(item.isComplete);
-  // const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [
     deleteTodoItemMutation,
@@ -87,7 +84,6 @@ export function TodoItem({
       </Center>
       <Spacer />
       <Center>
-        {/*<Fade in={isOpen}>*/}
         <Button
           isLoading={deleteLoading}
           colorScheme="pink"
@@ -100,7 +96,6 @@ export function TodoItem({
         >
           X
         </Button>
-        {/*</Fade>*/}
       </Center>
       {updateError && <div>{updateError.message}</div>}
       {deleteError && <div>{deleteError.message}</div>}
