@@ -4,6 +4,7 @@ import {
   useUpdateTodoItemMutation,
 } from "./generated";
 import {
+  Box,
   Button,
   Center,
   Checkbox,
@@ -11,7 +12,6 @@ import {
   EditableInput,
   EditablePreview,
   Flex,
-  Spacer,
 } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -64,7 +64,7 @@ export function TodoItem({
           }}
         />
       </Center>
-      <Center>
+      <Box flexGrow={1} paddingRight={4}>
         <Editable
           value={content}
           onChange={(val) => setContent(val)}
@@ -81,12 +81,12 @@ export function TodoItem({
           <EditablePreview />
           <EditableInput />
         </Editable>
-      </Center>
-      <Spacer />
+      </Box>
+      {/*<Spacer />*/}
       <Center>
         <Button
           isLoading={deleteLoading}
-          colorScheme="pink"
+          colorScheme="black"
           size={"xs"}
           onClick={() => {
             deleteTodoItemMutation({
