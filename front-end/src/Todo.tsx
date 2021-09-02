@@ -1,4 +1,4 @@
-import { Box, Text, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack } from "@chakra-ui/react";
 import { AddTodoItem } from "./AddTodoItem";
 import { TodoItem } from "./TodoItem";
 import { useListTodosQuery } from "./generated";
@@ -20,7 +20,7 @@ export function Todo() {
       <Flex direction={"column"} key={todo.id}>
         <Flex marginBottom={4}>
           <Link to={"/"}>
-            <ArrowBackIcon />
+            <ArrowBackIcon w={10} h={10} _hover={{ color: "gray.400" }} />
           </Link>
         </Flex>
         <Flex marginBottom={2}>
