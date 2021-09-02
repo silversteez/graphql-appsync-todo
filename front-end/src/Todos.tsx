@@ -1,4 +1,3 @@
-import { Stack } from "@chakra-ui/react";
 import { useListTodosQuery } from "./generated";
 import { AddTodo } from "./AddTodo";
 import { TodoSummary } from "./TodoSummary";
