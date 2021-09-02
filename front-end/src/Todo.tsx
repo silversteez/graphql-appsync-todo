@@ -5,6 +5,7 @@ import { useListTodosQuery } from "./generated";
 import { useParams } from "react-router-dom";
 import { Layout } from "./Layout";
 import { Link } from "react-router-dom";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 export function Todo() {
   const { data, loading, error } = useListTodosQuery();
@@ -19,7 +20,7 @@ export function Todo() {
       <Flex direction={"column"} key={todo.id}>
         <Flex marginBottom={4}>
           <Link to={"/"}>
-            <Text>Back</Text>
+            <ArrowBackIcon />
           </Link>
         </Flex>
         <Flex marginBottom={2}>
