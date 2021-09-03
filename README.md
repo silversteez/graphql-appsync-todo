@@ -1,4 +1,4 @@
-# AppSync & React Todo App
+# A Serverless Todo App
 
 Deployed here: https://d17sofd3yzro6z.cloudfront.net/
 
